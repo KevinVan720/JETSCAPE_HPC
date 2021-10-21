@@ -132,7 +132,7 @@ def hadronizeWith(outputFolder, fileName):
             subFile.writelines(
             "rm -rf "+buildDir+"\n")
             subFile.writelines(
-            "rm "+baseDir+"/"+Out1+"\n")
+            "rm "+baseDir+"/"+Input_Had+"\n")
 
             # Write: change mode
             subFile.writelines("chmod -R g+r ../../../"+OutDir+"\n")
