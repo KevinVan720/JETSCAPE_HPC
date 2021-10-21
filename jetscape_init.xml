@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+
+<jetscape>
+  
+  <nEvents> 4000 </nEvents>
+  <setReuseHydro> true </setReuseHydro>
+  <nReuseHydro> 10 </nReuseHydro>
+  
+  <JetScapeWriterAscii> on </JetScapeWriterAscii>
+  <outputFilename>test_out</outputFilename>
+  <vlevel> 0 </vlevel>
+  <nEvents_printout> 1 </nEvents_printout>
+
+  <Random>
+    <seed>0</seed>
+  </Random>
+  <!-- Inital State Module  -->
+  <IS>
+    <initial_profile_path>/tier2/home/groups/jetscape/HydroProfiles/5TeV_0-10/</initial_profile_path>
+  </IS>
+  
+  <!-- Hard Process -->
+  <Hard>
+    <PythiaGun>
+      <FSR_on>0</FSR_on>
+      <pTHatMin>500</pTHatMin>
+      <pTHatMax>550</pTHatMax>
+      <eCM>5020</eCM>
+      <useHybridHad>0</useHybridHad>
+    </PythiaGun>
+  </Hard>
+  
+  <!--Preequilibrium Dynamics Module -->
+  <Preequilibrium>
+    <NullPreDynamics> </NullPreDynamics>
+  </Preequilibrium>
+  
+  <!-- Hydro  Module  -->
+  <Hydro>
+    <hydro_from_file>
+      <name>Hydro from file </name>
+      <read_in_multiple_hydro>1</read_in_multiple_hydro>
+      <hydro_files_folder>/tier2/home/groups/jetscape/HydroProfiles/5TeV_0-10/</hydro_files_folder>
+    </hydro_from_file>
+  </Hydro>
+  
+  <!--Eloss Modules -->
+  <Eloss>
+
+    <deltaT>0.1</deltaT>
+    <formTime> -0.1</formTime>
+    <maxT>150</maxT>
+    <mutex>ON</mutex>
+
+    <Matter>
+      <name>Matter</name>
+      <useHybridHad>0</useHybridHad>
+      <matter_on> 1 </matter_on>
+      <Q0> 1.414 </Q0>
+      <T0> 0.16 </T0>
+      <vir_factor> 0.25 </vir_factor>
+      <in_vac> 0 </in_vac>
+      <recoil_on> 1 </recoil_on>
+      <broadening_on> 0 </broadening_on>
+      <brick_med> 0 </brick_med>   <!-- Set brick_med to 1 while using Brick Hydro module-->
+      <brick_length> 5.0 </brick_length>
+      <hydro_Tc> 0.16 </hydro_Tc>
+      <!-- Pick a qhat formula -->
+      <!-- Type=0 : HTL Formula with both alpha_s fixed  -->
+      <!-- Type=1 : HTL Formula with one running alpha_s and one fixed alpha_s  -->
+      <!-- Type=2 : Constant q-hat; qhat=qhat0   -->
+      <!-- Type=3 : qhat=qhat0*T^3  -->
+      <!-- Type=4 : qhat=qhat0*s; s=entropy density  -->
+      <!-- Type=5 : HTL q-hat with Virtuality dependent function  -->
+      <QhatParametrizationType> 5 </QhatParametrizationType>
+      <qhat0> -2.0 </qhat0>  <!-- If Type=0, 1, 5 set qhat0 as negative since alphas will be used-->
+      <alphas> 0.3 </alphas>
+      <qhatA> 10.0 </qhatA>    <!-- Always positive, Used only if QhatParametrizationType=5  -->
+      <qhatB> 100.0 </qhatB>    <!-- Always positive, Used only if QhatParametrizationType=5  -->
+      <tStart> 0.6 </tStart> <!-- Start time of jet quenching, proper time, fm/c   -->
+    </Matter>
+
+    <Lbt>
+      <name> Lbt </name>
+      <Q0> 1.414 </Q0>
+      <in_vac> 0 </in_vac>
+      <only_leading> 0 </only_leading>
+      <hydro_Tc> 0.16 </hydro_Tc>
+      <alphas> 0.3 </alphas>
+      <run_alphas>1</run_alphas>   <!-- 0 for fixed alpha_s and 1 for running alpha_s -->
+      <tStart> 0.6 </tStart> <!-- Start time of jet quenching, proper time, fm/c   -->
+    </Lbt>
+  </Eloss>
+  
+  <!-- Jet Hadronization Module -->
+  <JetHadronization>
+    <name>colorless</name>
+    <take_recoil>1</take_recoil>
+    <eCMforHadronization>2510</eCMforHadronization>
+  </JetHadronization>
+  
+</jetscape>

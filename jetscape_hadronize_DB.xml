@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+<jetscape>
+  
+  <nEvents> 4000 </nEvents>
+  <setReuseHydro> true </setReuseHydro>
+  <nReuseHydro> 10 </nReuseHydro>
+  
+  <JetScapeWriterAscii> on </JetScapeWriterAscii>
+  <outputFilename>test_out</outputFilename>
+  <vlevel> 0 </vlevel>
+  <nEvents_printout> 1 </nEvents_printout>
+
+  <Random>
+    <seed>0</seed>
+  </Random>
+   <!-- Hard Process -->
+  <Hard>
+    <PGun>
+    <pT>0.1</pT>
+    </PGun>
+  </Hard>
+
+  <!--Eloss Modules -->
+  <Eloss>
+
+    <deltaT>0.1</deltaT>
+    <formTime> -0.1</formTime>
+    <maxT>0.0</maxT>
+    <mutex>ON</mutex>
+
+    <CustomModulePartonReader>
+      <name> CustomModulePartonReader </name>
+      <inputName>Partons_0190_0200_ev_860k_to_870k.dat</inputName>
+    </CustomModulePartonReader>
+
+  </Eloss>
+
+  <!-- Jet Hadronization Module -->
+  <JetHadronization>
+    <name>colorless</name>
+    <take_recoil>1</take_recoil>
+    <eCMforHadronization>2510</eCMforHadronization>
+    <LinesToRead>
+    4:mayDecay=off
+    5:mayDecay=off
+    411:mayDecay=off
+    421:mayDecay=off
+    413:mayDecay=off
+    511:mayDecay=off
+    521:mayDecay=off
+    513:mayDecay=off
+    523:mayDecay=off
+    </LinesToRead>
+  </JetHadronization>
+  
+</jetscape>
