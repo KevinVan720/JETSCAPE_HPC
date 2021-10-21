@@ -62,7 +62,7 @@ def hadronizeWith(outputFolder, fileName):
                 if 'outputFilename' in line:
                     line = '<outputFilename>'+baseDir+"/"+OutDir+FileStr+'</outputFilename>\n'
 
-                if 'intputName' in line:
+                if 'inputName' in line:
                     Input_Par = "OutputFiles/"+extPartType1+"_"+FileStr+".dat"
                     line = '      <inputName>'+baseDir+"/"+Input_Par+'</inputName>\n'
 
