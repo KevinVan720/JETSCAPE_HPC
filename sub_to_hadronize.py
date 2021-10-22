@@ -64,7 +64,7 @@ def hadronizeWith(outputFolder, fileName,linesToRead=None):
                 if 'outputFilename' in line:
                     line = '<outputFilename>'+baseDir+"/"+OutDir+FileStr+'</outputFilename>\n'
 
-                if "<ELoss>" in line:
+                if "<Eloss>" in line:
                     inEnergy = True
                     Input_Par = "OutputFiles/"+extPartType1+"_"+FileStr+".dat"
                     line = '      <inputName>'+baseDir+"/"+Input_Par+'</inputName>\n'
@@ -76,7 +76,7 @@ def hadronizeWith(outputFolder, fileName,linesToRead=None):
                      <mutex>ON</mutex>
 
                      <CustomModulePartonReader>
-                     <name> CustomModulePartonReader </name>'''\
+                     <name> CustomModulePartonReader </name>\n'''\
                     +line\
                     +'''</CustomModulePartonReader>
                     </Eloss>
@@ -89,20 +89,16 @@ def hadronizeWith(outputFolder, fileName,linesToRead=None):
                     if linesToRead!=None:
                         chunk+=   '''<LinesToRead>'''+\
                         linesToRead+\
-                        '''</LinesToRead>'''
+                        '''</LinesToRead>\n'''
                     sys.stdout.write(chunk)
 
                 if " </JetHadronization>" in line:
                     inEnergy = False
 
-                if 'inputName' in line:
-                    Input_Par = "OutputFiles/"+extPartType1+"_"+FileStr+".dat"
-                    line = '      <inputName>'+baseDir+"/"+Input_Par+'</inputName>\n'
-
                 if not inEnergy:
                     sys.stdout.write(line)
 
-            buildDir = "builds/build_"+FileStr
+            buildDir = "builds/build_"+outputFolder+FileStr
             buildDir = os.path.join(baseDir, buildDir)
             # checkAndBuildDir(buildDir)
 
@@ -187,3 +183,20 @@ def hadronizeWith(outputFolder, fileName,linesToRead=None):
 
 
 hadronizeWith("light", "jetscape_init.xml")
+hadronizeWith("D", "jetscape_init.xml", linesToRead='''
+    4:mayDecay=off
+    411:mayDecay=off
+    421:mayDecay=off
+    413:mayDecay=off
+''')
+hadronizeWith("DB", "jetscape_init.xml", linesToRead='''
+    4:mayDecay=off
+    5:mayDecay=off
+    411:mayDecay=off
+    421:mayDecay=off
+    413:mayDecay=off
+    511:mayDecay=off
+    521:mayDecay=off
+    513:mayDecay=off
+    523:mayDecay=off
+''')
