@@ -135,6 +135,9 @@ for n in range(len(pThat_Min)):
         subFile.writelines("time ./"+preCompiled_Had+" ../../../"+Input_Had+" ../../../"+Output_Had+" 1> ../../../" +
                            OutDir+"Non-PBS_Hadrons_"+FileStr+".log 2> ../../../"+OutDir+"Non-PBS_Hadrons_"+FileStr+".err\n")
 
+        subFile.writelines("cat "+baseDir+"/OutputFiles/"+extPartType2+"_"+FileStr+".dat | grep \"#\" > "+
+            baseDir+"/OutputFiles/"+"Headers"+"_"+FileStr+".dat")
+        
         subFile.writelines(
             "rm -rf "+buildDir+"\n")
         subFile.writelines(

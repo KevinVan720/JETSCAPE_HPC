@@ -46,7 +46,7 @@ checkAndBuildDir(os.path.join(baseDir, "OutputFiles"))
 ##### End of directory checking/creation #####
 
 
-def hadronizeWith(outputFolder, fileName,linesToRead=None):
+def hadronizeWith(outputFolder, fileName):
     checkAndBuildDir(os.path.join(baseDir, "OutputFiles/"+outputFolder))
     for n in range(len(pThat_Min)):
         for m in repeatRange:
@@ -54,6 +54,8 @@ def hadronizeWith(outputFolder, fileName,linesToRead=None):
             FileStr = str(pThat_Min[n]).zfill(4)+"_"+str(pThat_Max[n]).zfill(4) + \
                 "_ev_"+str(10*(m)).zfill(3)+"k_to_"+str(10*(m+1)).zfill(3)+"k"
             OutDir = "OutputFiles/"+outputFolder+"/"
+            os.system("cat "+baseDir+"/OutputFiles/"+extPartType2+"_"+FileStr+".dat | grep \"#\" > "+
+            baseDir+"/OutputFiles/"+"Headers"+"_"+FileStr+".dat")
 
             inputfileName = baseDir+"/InputFiles/jetscape_hadronize_"+outputFolder+"_Bin" + \
                 str(pThat_Min[n])+"_"+str(pThat_Max[n])+"_"+str(m)+".xml"
@@ -64,39 +66,11 @@ def hadronizeWith(outputFolder, fileName,linesToRead=None):
                 if 'outputFilename' in line:
                     line = '<outputFilename>'+baseDir+"/"+OutDir+FileStr+'</outputFilename>\n'
 
-                if "<Eloss>" in line:
-                    inEnergy = True
+                if 'inputName' in line:
                     Input_Par = "OutputFiles/"+extPartType1+"_"+FileStr+".dat"
                     line = '      <inputName>'+baseDir+"/"+Input_Par+'</inputName>\n'
-                    chunk='''
-                    <Eloss>
-                     <deltaT>0.1</deltaT>
-                     <formTime> -0.1</formTime>
-                     <maxT>0.0</maxT>
-                     <mutex>ON</mutex>
 
-                     <CustomModulePartonReader>
-                     <name> CustomModulePartonReader </name>\n'''\
-                    +line\
-                    +'''</CustomModulePartonReader>
-                    </Eloss>
-
-                    <!-- Jet Hadronization Module -->
-                    <JetHadronization>
-                    <name>colorless</name>
-                    <take_recoil>1</take_recoil>
-                    <eCMforHadronization>2510</eCMforHadronization>'''
-                    if linesToRead!=None:
-                        chunk+=   '''<LinesToRead>'''+\
-                        linesToRead+\
-                        '''</LinesToRead>\n'''
-                    sys.stdout.write(chunk)
-
-                if " </JetHadronization>" in line:
-                    inEnergy = False
-
-                if not inEnergy:
-                    sys.stdout.write(line)
+                sys.stdout.write(line)
 
             buildDir = "builds/build_"+outputFolder+FileStr
             buildDir = os.path.join(baseDir, buildDir)
@@ -182,21 +156,6 @@ def hadronizeWith(outputFolder, fileName,linesToRead=None):
             time.sleep(0.7)
 
 
-hadronizeWith("light", "jetscape_init.xml")
-hadronizeWith("D", "jetscape_init.xml", linesToRead='''
-    4:mayDecay=off
-    411:mayDecay=off
-    421:mayDecay=off
-    413:mayDecay=off
-''')
-hadronizeWith("DB", "jetscape_init.xml", linesToRead='''
-    4:mayDecay=off
-    5:mayDecay=off
-    411:mayDecay=off
-    421:mayDecay=off
-    413:mayDecay=off
-    511:mayDecay=off
-    521:mayDecay=off
-    513:mayDecay=off
-    523:mayDecay=off
-''')
+hadronizeWith("light", "jetscape_hadronize_light.xml")
+hadronizeWith("D", "jetscape_hadronize_D.xml")
+hadronizeWith("DB", "jetscape_hadronize_DB.xml")

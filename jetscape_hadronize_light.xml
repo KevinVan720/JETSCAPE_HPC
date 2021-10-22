@@ -3,8 +3,6 @@
 <jetscape>
   
   <nEvents> 4000 </nEvents>
-  <setReuseHydro> true </setReuseHydro>
-  <nReuseHydro> 10 </nReuseHydro>
   
   <JetScapeWriterAscii> on </JetScapeWriterAscii>
   <outputFilename>test_out</outputFilename>
@@ -16,13 +14,10 @@
   </Random>
    <!-- Hard Process -->
   <Hard>
-  <PythiaGun>
-      <FSR_on>0</FSR_on>
-      <pTHatMin>500</pTHatMin>
-      <pTHatMax>550</pTHatMax>
-      <eCM>5020</eCM>
-      <useHybridHad>0</useHybridHad>
-    </PythiaGun>
+    <PGun>
+      <name>PGun</name>
+      <pT>0.01</pT>
+    </PGun>
 
   </Hard>
 
