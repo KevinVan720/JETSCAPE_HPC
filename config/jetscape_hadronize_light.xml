@@ -16,9 +16,14 @@
   </Random>
    <!-- Hard Process -->
   <Hard>
-    <PGun>
-    <pT>0.1</pT>
-    </PGun>
+  <PythiaGun>
+      <FSR_on>0</FSR_on>
+      <pTHatMin>500</pTHatMin>
+      <pTHatMax>550</pTHatMax>
+      <eCM>5020</eCM>
+      <useHybridHad>0</useHybridHad>
+    </PythiaGun>
+
   </Hard>
 
   <!--Eloss Modules -->
@@ -41,17 +46,6 @@
     <name>colorless</name>
     <take_recoil>1</take_recoil>
     <eCMforHadronization>2510</eCMforHadronization>
-    <LinesToRead>
-    4:mayDecay=off
-    5:mayDecay=off
-    411:mayDecay=off
-    421:mayDecay=off
-    413:mayDecay=off
-    511:mayDecay=off
-    521:mayDecay=off
-    513:mayDecay=off
-    523:mayDecay=off
-    </LinesToRead>
   </JetHadronization>
   
 </jetscape>
