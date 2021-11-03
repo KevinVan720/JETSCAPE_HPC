@@ -131,11 +131,13 @@ for n in range(len(pThat_Min)):
         
         subFile.writelines("time ./"+preCompiled_Par+" ../../../"+Input_Par+" ../../../"+Output_Par+" 1> ../../../" +
                            OutDir+"Non-PBS_Partons_"+FileStr+".log 2> ../../../"+OutDir+"Non-PBS_Partons_"+FileStr+".err\n")
+        
+        #now we dont save the hadrons at this step
+        #subFile.writelines("time ./"+preCompiled_Had+" ../../../"+Input_Had+" ../../../"+Output_Had+" 1> ../../../" +
+        #                   OutDir+"Non-PBS_Hadrons_"+FileStr+".log 2> ../../../"+OutDir+"Non-PBS_Hadrons_"+FileStr+".err\n")
 
-        subFile.writelines("time ./"+preCompiled_Had+" ../../../"+Input_Had+" ../../../"+Output_Had+" 1> ../../../" +
-                           OutDir+"Non-PBS_Hadrons_"+FileStr+".log 2> ../../../"+OutDir+"Non-PBS_Hadrons_"+FileStr+".err\n")
-
-        subFile.writelines("cat "+baseDir+"/OutputFiles/"+extPartType2+"_"+FileStr+".dat | grep \"#\" > "+
+        #we store the event information in a separate file for future analysis
+        subFile.writelines("cat "+baseDir+"/OutputFiles/"+extPartType1+"_"+FileStr+".dat | grep \"#\" > "+
             baseDir+"/OutputFiles/"+"Headers"+"_"+FileStr+".dat")
         
         subFile.writelines(

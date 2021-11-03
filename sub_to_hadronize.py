@@ -54,14 +54,14 @@ def hadronizeWith(outputFolder, fileName):
             FileStr = str(pThat_Min[n]).zfill(4)+"_"+str(pThat_Max[n]).zfill(4) + \
                 "_ev_"+str(10*(m)).zfill(3)+"k_to_"+str(10*(m+1)).zfill(3)+"k"
             OutDir = "OutputFiles/"+outputFolder+"/"
-            os.system("cat "+baseDir+"/OutputFiles/"+extPartType2+"_"+FileStr+".dat | grep \"#\" > "+
-            baseDir+"/OutputFiles/"+"Headers"+"_"+FileStr+".dat")
+            #prepare the header file
+            if not os.path.exists(baseDir+"/OutputFiles/"+"Headers"+"_"+FileStr+".dat"):
+                os.system("cat "+baseDir+"/OutputFiles/"+extPartType1+"_"+FileStr+".dat | grep \"#\" > "+ baseDir+"/OutputFiles/"+"Headers"+"_"+FileStr+".dat")
 
             inputfileName = baseDir+"/InputFiles/jetscape_hadronize_"+outputFolder+"_Bin" + \
                 str(pThat_Min[n])+"_"+str(pThat_Max[n])+"_"+str(m)+".xml"
             os.system("cp "+baseDir+"/"+fileName+" " + inputfileName)
 
-            inEnergy = False
             for line in fileinput.input([inputfileName], inplace=True):
                 if 'outputFilename' in line:
                     line = '<outputFilename>'+baseDir+"/"+OutDir+FileStr+'</outputFilename>\n'
@@ -84,7 +84,7 @@ def hadronizeWith(outputFolder, fileName):
             Output_Had = OutDir+extPartType2+"_"+FileStr+".dat"
 
             if (os.path.exists(Output_Had)):
-                print("found output had")
+                print("found output "+Output_Had)
                 if(os.path.exists(buildDir)):
                     print("found a build directory...re-building")
                     os.system("rm -rf "+buildDir+"/*")
@@ -153,7 +153,7 @@ def hadronizeWith(outputFolder, fileName):
 
             print("submitted job "+subFileName)
             # ...and wait a few seconds, so as not to overwhelm the scheduler
-            time.sleep(0.7)
+            time.sleep(0.1)
 
 
 hadronizeWith("light", "jetscape_hadronize_light.xml")
