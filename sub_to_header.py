@@ -73,7 +73,7 @@ for n in range(len(pThat_Min)):
         #checkAndBuildDir(buildDir)
 
         subFileName = "SubScripts/sub_"+FileStr
-        Input = "InputFiles/jetscape_initBin" + \
+        Input = "InputFiles/jetscape_headerBin" + \
             str(pThat_Min[n])+"_"+str(pThat_Max[n])+"_"+str(m)+".xml"
 
         Input_Par = Out1
