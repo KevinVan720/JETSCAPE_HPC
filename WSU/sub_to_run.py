@@ -9,6 +9,10 @@ import sys
 import fileinput
 import pathlib
 
+##### generate and submit jobs for running JETSCAPE (not containerized) on a HPC that uses slurm job scheduler.
+##### the folder structure should be
+##### JETSCAPE jetscape_init.xml sub_to_run.py
+##### submitting the jobs by running python3 suyb_to_run.py
 
 def checkAndBuildDir(checkDir):
     if (not os.path.isdir(checkDir)):
@@ -17,8 +21,9 @@ def checkAndBuildDir(checkDir):
 
 
 ##### Input parameters #####
-baseDir = str(pathlib.Path(__file__).parent.absolute())
-extPartType1 = "Partons"
+baseDir = str(pathlib.Path(__file__).parent.absolute()) #the current directory
+#both final partons and hadrons are stored
+extPartType1 = "Partons" 
 extPartType2 = "Hadrons"
 
 preCompiled_Raw = "runJetscape"
@@ -28,6 +33,7 @@ preCompiled_Had = "FinalStateHadrons"
 queueType = "regular"
 maxTime=12 #in hours
 repeatRange = range(0,1)
+
 
 pThatPair = [1, 2, 3, 4, 5, 7, 9, 11, 13, 15, 17, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230,
              240, 250, 260, 270, 280, 290, 300, 350, 400, 450, 500, 550, 600, 700, 800, 900,  1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2510]
@@ -51,6 +57,7 @@ for n in range(len(pThat_Min)):
             "_ev"
     OutDir = "OutputFiles/"
 
+    # creating the JETSCPAE user xml file with the appropriate pThatBins. 
     inputfileName = baseDir+"/InputFiles/jetscape_initBin" + \
             str(pThat_Min[n])+"_"+str(pThat_Max[n])+".xml"
     os.system("cp "+baseDir+"/jetscape_init.xml " + inputfileName)
@@ -67,6 +74,7 @@ for n in range(len(pThat_Min)):
 
     Out1 = OutDir+FileStr+".dat"
 
+    # creating the build directory for each job
     buildDir = "builds/build_"+FileStr
     buildDir = os.path.join(baseDir, buildDir)
     checkAndBuildDir(buildDir)
@@ -85,28 +93,22 @@ for n in range(len(pThat_Min)):
     if (os.path.exists(Output_Had)):
         continue
 
+    # writing the actual submission script
     subFile = open(subFileName, "w")
 
     #Write: Header
     subFile.writelines("#!/usr/bin/env bash\n")
     subFile.writelines("#SBATCH -q "+queueType+"\n")
 
-    #subFile.writelines("#SBATCH --constraint=haswell\n")
+    # a single JETSCAPE job takes 1 core, 4GB of RAM 
     subFile.writelines("#SBATCH --mem=4GB\n")
     subFile.writelines("#SBATCH -N 1\n")
     subFile.writelines("#SBATCH -n 1\n")
-
-    subFile.writelines("#SBATCH --cpus-per-task 1")
-    subFile.writelines("#SBATCH --license cscratch1")
 
     subFile.writelines("#SBATCH --job-name=MA_" + str(pThat_Min[n]).zfill(4)+"_"+str(pThat_Max[n]).zfill(4)+"\n")
     subFile.writelines("#SBATCH -e "+OutDir+"MA_"+FileStr+".err\n")
     subFile.writelines("#SBATCH -o "+OutDir+"MA_"+FileStr+".log\n")
     subFile.writelines("#SBATCH --time "+str(maxTime)+":00:00\n")
-
-    subFile.writelines("#SBATCH --array=1-16")
-
-    #SBATCH --array=1-16
 
         
     subFile.writelines("mkdir " + buildDir + "/build" + "\n")
@@ -115,7 +117,7 @@ for n in range(len(pThat_Min)):
                             buildDir + "\n")
 
     # Write: Go to directory
-    #subFile.writelines("module unload root\n")
+
     subFile.writelines("cd " + buildDir + "/build" "\n")
     subFile.writelines("cmake ..\n")
     subFile.writelines("make\n")
@@ -131,8 +133,14 @@ for n in range(len(pThat_Min)):
     subFile.writelines("srun ./"+preCompiled_Had+" ../../../"+Input_Had+" ../../../"+Output_Had+" 1> ../../../" +
                            OutDir+"Non-PBS_Hadrons_"+FileStr+".log 2> ../../../"+OutDir+"Non-PBS_Hadrons_"+FileStr+".err\n")
 
+    #we store the event information in a separate file for future analysis
+    subFile.writelines("cat "+baseDir+"/OutputFiles/"+extPartType2+"_"+FileStr+".dat | grep \"#\" > "+
+            baseDir+"/OutputFiles/"+"Headers"+"_"+FileStr+".dat"+"\n")
+
     subFile.writelines(
             "rm -rf "+buildDir+"\n")
+    # removing the final hadron file to save space 
+    # don't need to do it if you have enough space or the right hadronization settings
     subFile.writelines(
             "rm "+baseDir+"/"+Out1+"\n")
 
