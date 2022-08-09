@@ -9,12 +9,15 @@ import sys
 import fileinput
 import pathlib
 
+##### generate and submit jobs for running JETSCAPE (not containerized) on a HPC that uses slurm job scheduler.
+##### prerequisite: you need to already generated the final partons under the OutputFiles folder
+##### in this script's job, the final partons are fed into JETSCAPE for just hadronization using the Colorless hadronization module. 
+##### Otherwise the content is the same as sub_to_run.py
 
 def checkAndBuildDir(checkDir):
     if (not os.path.isdir(checkDir)):
         print("Creating directory \""+checkDir+"\" ...")
         os.mkdir(checkDir)
-
 
 ##### Input parameters #####
 baseDir = str(pathlib.Path(__file__).parent.absolute())
