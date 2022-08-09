@@ -1,9 +1,11 @@
 This repo contains python scripts that submits multiple jobs of JETSCAPE on a HPC. Specifically, this repo is for heavy flavor study using the branch:
 https://github.com/JETSCAPE/JETSCAPE-COMP/tree/ReleaseAApaper_for_HD_HF_photon. 
 
+Before proceeding, you should have working knowledge of the JETSCAPE framework and how submitting jobs on a HPC works. 
+
 ### WSU
 
-The WSU folder contains scripts that were tested on the WSU grid that uses the slurm job scheduler. It is for exploring JETSCAPE with different settings once at a time. You need to put the JETSCAPE folder, the user xml file and the sub_to_run.py file under the same folder. Then type "python3 sub_to_run.py" will submit the jobs that has different pThat bins. 
+The WSU folder contains scripts that were tested on the WSU grid that uses the slurm job scheduler. It is for exploring JETSCAPE with different settings once at a time. You need to put the JETSCAPE folder, the user xml file and the sub_to_run.py file under the same folder. Then typing "python3 sub_to_run.py" will submit the jobs that has different pThat bins. 
 
 The sub_to_hadronize.py will submit jobs that takes final partons generated from the previous step and hadronize them with the settings you assign. 
 
